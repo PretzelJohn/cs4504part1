@@ -11,3 +11,4 @@ bin
 *.iml
 /.idea/
 /.git/
+package.bat
