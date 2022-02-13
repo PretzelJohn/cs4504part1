@@ -4,18 +4,18 @@ import java.io.*;
 public class TCPServerRouter {
 	public static void main(String[] args) throws IOException {
 		Socket clientSocket = null; //socket for the thread
-        Object[][] RoutingTable = new Object[10][2]; //routing table
-		int SockNum = 5555; //port number
-		boolean running = true;
+        Object[][] routingTable = new Object[10][2]; //routing table
+		int sockNum = 5555; //port number
 		int ind = 0; //index in the routing table
+		boolean running = true; //status
 
 		//Accepting connections
         ServerSocket serverSocket = null; //server socket for accepting connections
         try {
-			serverSocket = new ServerSocket(5555);
-			System.out.println("ServerRouter is Listening on port: 5555.");
+			serverSocket = new ServerSocket(sockNum);
+			System.out.println("ServerRouter is Listening on port: "+sockNum+".");
         } catch (IOException e) {
-            System.err.println("Could not listen on port: 5555.");
+            System.err.println("Could not listen on port: "+sockNum+".");
             System.exit(1);
         }
 
@@ -23,7 +23,7 @@ public class TCPServerRouter {
 		while(running) {
 			try {
 				clientSocket = serverSocket.accept();
-				SThread t = new SThread(RoutingTable, clientSocket, ind); //creates a thread with a random port
+				SThread t = new SThread(routingTable, clientSocket, ind); //creates a thread with a random port
 				t.start(); //starts the thread
 				ind++; //increments the index
 				System.out.println("ServerRouter connected with Client/Server: " + clientSocket.getInetAddress().getHostAddress());
