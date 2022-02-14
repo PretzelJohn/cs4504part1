@@ -35,8 +35,22 @@ public class TCPClient {
 			System.exit(1);
 		}
 
-		//Read file.txt from jar
-		Reader reader = new FileReader("file.txt");
+		//Read files from files directory
+		File fileDir = new File("files");
+		File[] fileList = fileDir.listFiles();
+		if(fileList == null) {
+			System.err.println("Couldn't get files folder!");
+			System.exit(1);
+		}
+
+		long size = 0;
+		for(File file : fileList) {
+			//TODO: Add up the size of each file and take avg
+			System.out.println(file.getName());
+		}
+
+		//TODO: Add each file to a list
+		Reader reader = new FileReader("files/file.txt");
 		BufferedReader fromFile = new BufferedReader(reader); //reader for the string file
 
 		//Variables for message passing
@@ -52,20 +66,32 @@ public class TCPClient {
 		t0 = System.currentTimeMillis();
 
 		//Communication while loop
+		long totalTime = 0;
+		int numCycles = 0;
 		while((fromServer = in.readLine()) != null) {
+			//Receives responses from server
 			System.out.println("Server: " + fromServer);
 			t1 = System.currentTimeMillis();
 			if(fromServer.equals("Bye.")) break; //exit statement
 			t = t1 - t0; //calculates cycle time between messages
+			totalTime += t;
+			numCycles++;
 			System.out.println("Cycle time: " + t);
 
+			//Send messages from files to server
 			fromUser = fromFile.readLine(); //reading strings from a file
 			if(fromUser != null) {
 				System.out.println("Client: " + fromUser);
 				out.println(fromUser); //sending the strings to the Server via ServerRouter
 				t0 = System.currentTimeMillis();
+			} else {
+				//Go to next file
+				//If there is no next file, do nothing
 			}
+
 		}
+
+		System.out.println("Average Cycle Time: "+totalTime/(double)numCycles);
 
 		//Closing connections
 		out.close();
