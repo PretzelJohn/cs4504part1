@@ -29,7 +29,6 @@ public class TCPServerRouter {
 		}
 
 		//Creating threads with accepted connections
-		//long time = 0;
 		while(running) {
 			try {
 				clientSocket = serverSocket.accept();
@@ -37,7 +36,6 @@ public class TCPServerRouter {
 				t.start(); //starts the thread
 				ind++; //increments the index
 				System.out.println("ServerRouter connected with Client/Server: " + clientSocket.getInetAddress().getHostAddress());
-				//System.out.println("Avg lookup time: "+((double)time/((double)ind*1000000.0))+" ms");
 			} catch (IOException e) {
 				System.err.println("Client/Server failed to connect.");
 				System.exit(1);
@@ -47,6 +45,5 @@ public class TCPServerRouter {
 		//closing connections
 		clientSocket.close();
 		serverSocket.close();
-		System.out.println("Sockets closed!");
     }
 }
